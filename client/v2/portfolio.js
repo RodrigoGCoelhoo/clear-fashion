@@ -24,6 +24,7 @@ let currentPagination = {};
 // instantiate the selectors
 const selectShow = document.querySelector("#show-select");
 const selectPage = document.querySelector("#page-select");
+const selectBrand = document.querySelector("#brand-select");
 const sectionProducts = document.querySelector("#products");
 const spanNbProducts = document.querySelector("#nbProducts");
 
@@ -43,9 +44,17 @@ const setCurrentProducts = ({ result, meta }) => {
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (page = 1, size = 12, brand = null) => {
   try {
-    const response = await fetch(`https://clear-fashion-api.vercel.app?page=${page}&size=${size}`);
+    let response;
+    if (brand) {
+      response = await fetch(
+        `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`
+      );
+    } else {
+      response = await fetch(`https://clear-fashion-api.vercel.app?page=${page}&size=${size}`);
+    }
+
     const body = await response.json();
 
     if (body.success !== true) {
@@ -57,6 +66,24 @@ const fetchProducts = async (page = 1, size = 12) => {
   } catch (error) {
     console.error(error);
     return { currentProducts, currentPagination };
+  }
+};
+
+/**
+ * Fetch brand from api
+ * @return {Array}
+ */
+const fetchBrands = async () => {
+  try {
+    const response = await fetch(`https://clear-fashion-api.vercel.app/brands`);
+    const body = await response.json();
+
+    if (body.success !== true) {
+      console.error(body);
+    }
+    return body.data.result;
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -101,7 +128,25 @@ const renderPagination = (pagination) => {
 };
 
 /**
- * Render page selector
+ * Render brand selector
+ */
+const renderBrand = async () => {
+  const brands = await fetchBrands();
+
+  let options = `<option value="">All</option>`;
+
+  brands
+    .map((brand) => {
+      options += `<option value="${brand}">${brand}</option>`;
+    })
+    .join("");
+
+  selectBrand.innerHTML = options;
+};
+renderBrand();
+
+/**
+ * Render number of products
  * @param  {Object} pagination
  */
 const renderIndicators = (pagination) => {
@@ -143,6 +188,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 selectPage.addEventListener("change", async (event) => {
   const products = await fetchProducts(parseInt(event.target.value), currentPagination.pageSize);
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select the brand
+ */
+
+selectBrand.addEventListener("change", async (event) => {
+  currentPagination.currentPage = 1;
+
+  const products = await fetchProducts(
+    currentPagination.currentPage,
+    currentPagination.pageSize,
+    event.target.value
+  );
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
