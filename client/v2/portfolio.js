@@ -28,6 +28,10 @@ const selectBrand = document.querySelector("#brand-select");
 const sectionProducts = document.querySelector("#products");
 const spanNbProducts = document.querySelector("#nbProducts");
 
+// instantiate the checkers
+const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
+const checkerReasonablePrice = document.querySelector("#reasonable-price-checker");
+
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -42,18 +46,15 @@ const setCurrentProducts = ({ result, meta }) => {
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
  * @param  {Number}  [size=12] - size of the page
+ * @param  {String}
+ * @param  {String}
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12, brand = null) => {
+const fetchProducts = async (page = 1, size = 12, brand = "", released = "") => {
   try {
-    let response;
-    if (brand) {
-      response = await fetch(
-        `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`
-      );
-    } else {
-      response = await fetch(`https://clear-fashion-api.vercel.app?page=${page}&size=${size}`);
-    }
+    const response = await fetch(
+      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}&released=${released}`
+    );
 
     const body = await response.json();
 
@@ -199,11 +200,37 @@ selectPage.addEventListener("change", async (event) => {
 
 selectBrand.addEventListener("change", async (event) => {
   currentPagination.currentPage = 1;
+  currentPagination.brand = event.target.value;
 
   const products = await fetchProducts(
     currentPagination.currentPage,
     currentPagination.pageSize,
-    event.target.value
+    currentPagination.brand
+  );
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select checkbox recently released
+ */
+
+checkerRecentlyReleased.addEventListener("change", async (event) => {
+  if (checkerRecentlyReleased.checked) {
+    const now = new Date();
+    const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+    currentPagination.released = two_weeks_ago.toISOString().split("T")[0];
+    console.log(currentPagination.released);
+  } else {
+    currentPagination.released = "";
+  }
+
+  const products = await fetchProducts(
+    currentPagination.currentPage,
+    currentPagination.pageSize,
+    currentPagination.brand,
+    currentPagination.released
   );
 
   setCurrentProducts(products);
