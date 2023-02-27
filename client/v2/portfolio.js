@@ -32,6 +32,9 @@ const sectionProducts = document.querySelector("#products");
 const spanNbProducts = document.querySelector("#nbProducts");
 const spanNbBrands = document.querySelector("#nbBrands");
 const spanNbNewProducts = document.querySelector("#nbNewProducts");
+const spanP50 = document.querySelector("#p50");
+const spanP90 = document.querySelector("#p90");
+const spanP95 = document.querySelector("#p95");
 
 // instantiate the checkers
 const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
@@ -336,6 +339,23 @@ const getIndicators = async () => {
     return new Date(product.released) > two_weeks_ago;
   }).length;
   spanNbNewProducts.innerHTML = nbRecentProducts;
+
+  // Percentile
+  const sortedProducts = products.result.sort((productA, productB) =>
+    productA.price > productB.price ? 1 : -1
+  );
+
+  // p50
+  const p50_index = Math.floor(products.result.length * 0.5);
+  spanP50.innerHTML = sortedProducts[p50_index].price;
+
+  // p90
+  const p90_index = Math.floor(products.result.length * 0.9);
+  spanP90.innerHTML = sortedProducts[p90_index].price;
+
+  // p95
+  const p95_index = Math.floor(products.result.length * 0.95);
+  spanP95.innerHTML = sortedProducts[p95_index].price;
 };
 
 getIndicators();
