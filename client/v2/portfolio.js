@@ -27,7 +27,10 @@ const selectPage = document.querySelector("#page-select");
 const selectBrand = document.querySelector("#brand-select");
 const selectSort = document.querySelector("#sort-select");
 const sectionProducts = document.querySelector("#products");
+
+// Indicators
 const spanNbProducts = document.querySelector("#nbProducts");
+const spanNbBrands = document.querySelector("#nbBrands");
 
 // instantiate the checkers
 const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
@@ -169,6 +172,7 @@ const renderBrand = async () => {
     .join("");
 
   selectBrand.innerHTML = options;
+  spanNbBrands.innerHTML = brands.length;
 };
 renderBrand();
 
