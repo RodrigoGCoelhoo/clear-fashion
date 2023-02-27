@@ -295,17 +295,27 @@ checkerReasonablePrice.addEventListener("change", async (event) => {
 selectSort.addEventListener("change", async (event) => {
   let products = {};
   const all_products = await fetchAllProducts();
-
+  products.meta = currentPagination;
   if (event.target.value === "price-asc") {
     products.result = all_products.result.sort((productA, productB) =>
       productA.price > productB.price ? 1 : -1
     );
-    products.meta = currentPagination;
   } else if (event.target.value === "price-desc") {
     products.result = all_products.result.sort((productA, productB) =>
       productA.price < productB.price ? 1 : -1
     );
-    products.meta = currentPagination;
+  } else if (event.target.value === "date-asc") {
+    products.result = all_products.result.sort((productA, productB) => {
+      const productADate = new Date(productA.released);
+      const productBDate = new Date(productB.released);
+      return productADate < productBDate ? 1 : -1;
+    });
+  } else if (event.target.value === "date-desc") {
+    products.result = all_products.result.sort((productA, productB) => {
+      const productADate = new Date(productA.released);
+      const productBDate = new Date(productB.released);
+      return productADate > productBDate ? 1 : -1;
+    });
   } else {
     products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
   }
