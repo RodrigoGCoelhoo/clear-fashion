@@ -35,6 +35,7 @@ const spanNbNewProducts = document.querySelector("#nbNewProducts");
 const spanP50 = document.querySelector("#p50");
 const spanP90 = document.querySelector("#p90");
 const spanP95 = document.querySelector("#p95");
+const lastReleased = document.querySelector("#lastReleased");
 
 // instantiate the checkers
 const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
@@ -341,21 +342,30 @@ const getIndicators = async () => {
   spanNbNewProducts.innerHTML = nbRecentProducts;
 
   // Percentile
-  const sortedProducts = products.result.sort((productA, productB) =>
+  const sortedProductsPrice = products.result.sort((productA, productB) =>
     productA.price > productB.price ? 1 : -1
   );
 
   // p50
   const p50_index = Math.floor(products.result.length * 0.5);
-  spanP50.innerHTML = sortedProducts[p50_index].price;
+  spanP50.innerHTML = sortedProductsPrice[p50_index].price;
 
   // p90
   const p90_index = Math.floor(products.result.length * 0.9);
-  spanP90.innerHTML = sortedProducts[p90_index].price;
+  spanP90.innerHTML = sortedProductsPrice[p90_index].price;
 
   // p95
   const p95_index = Math.floor(products.result.length * 0.95);
-  spanP95.innerHTML = sortedProducts[p95_index].price;
+  spanP95.innerHTML = sortedProductsPrice[p95_index].price;
+
+  // Date
+  const last_date = products.result.sort((productA, productB) => {
+    const productADate = new Date(productA.released);
+    const productBDate = new Date(productB.released);
+    return productADate < productBDate ? 1 : -1;
+  })[0];
+
+  lastReleased.innerHTML = last_date.released;
 };
 
 getIndicators();
