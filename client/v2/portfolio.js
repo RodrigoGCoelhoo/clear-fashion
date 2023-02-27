@@ -172,24 +172,12 @@ const renderBrand = async () => {
     .join("");
 
   selectBrand.innerHTML = options;
-  spanNbBrands.innerHTML = brands.length;
 };
 renderBrand();
-
-/**
- * Render number of products
- * @param  {Object} pagination
- */
-const renderIndicators = (pagination) => {
-  const { count } = pagination;
-
-  spanNbProducts.innerHTML = count;
-};
 
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
-  renderIndicators(pagination);
 };
 
 /**
@@ -327,3 +315,18 @@ selectSort.addEventListener("change", async (event) => {
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
+
+// Indicators
+
+const getIndicators = async () => {
+  const brands = await fetchBrands();
+  const products = await fetchAllProducts();
+
+  // Total number of products
+  spanNbProducts.innerHTML = products.result.length;
+
+  // Total number of brands
+  spanNbBrands.innerHTML = brands.length;
+};
+
+getIndicators();
