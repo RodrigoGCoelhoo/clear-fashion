@@ -248,13 +248,32 @@ checkerRecentlyReleased.addEventListener("change", async (event) => {
   if (checkerRecentlyReleased.checked) {
     const all_products = await fetchAllProducts();
 
-    console.log(all_products);
-
     const now = new Date();
     const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
 
     products.result = all_products.result.filter((product) => {
       return new Date(product.released) > two_weeks_ago;
+    });
+    products.meta = all_products.meta;
+  } else {
+    products = await fetchProducts(1, 12, "");
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select checkbox reasonable price
+ */
+
+checkerReasonablePrice.addEventListener("change", async (event) => {
+  let products = {};
+  if (checkerReasonablePrice.checked) {
+    const all_products = await fetchAllProducts();
+
+    products.result = all_products.result.filter((product) => {
+      return product.price <= 50;
     });
     products.meta = all_products.meta;
   } else {
