@@ -25,6 +25,7 @@ let currentPagination = {};
 const selectShow = document.querySelector("#show-select");
 const selectPage = document.querySelector("#page-select");
 const selectBrand = document.querySelector("#brand-select");
+const selectSort = document.querySelector("#sort-select");
 const sectionProducts = document.querySelector("#products");
 const spanNbProducts = document.querySelector("#nbProducts");
 
@@ -233,7 +234,7 @@ selectBrand.addEventListener("change", async (event) => {
     currentPagination.brand
   );
 
-  console.log(products);
+  // console.log(products);
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
@@ -281,6 +282,32 @@ checkerReasonablePrice.addEventListener("change", async (event) => {
     products.meta = all_products.meta;
   } else {
     products = await fetchProducts(1, 12, "");
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Sort selector
+ */
+
+selectSort.addEventListener("change", async (event) => {
+  let products = {};
+  const all_products = await fetchAllProducts();
+
+  if (event.target.value === "price-asc") {
+    products.result = all_products.result.sort((productA, productB) =>
+      productA.price > productB.price ? 1 : -1
+    );
+    products.meta = currentPagination;
+  } else if (event.target.value === "price-desc") {
+    products.result = all_products.result.sort((productA, productB) =>
+      productA.price < productB.price ? 1 : -1
+    );
+    products.meta = currentPagination;
+  } else {
+    products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
   }
 
   setCurrentProducts(products);
