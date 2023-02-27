@@ -50,10 +50,10 @@ const setCurrentProducts = ({ result, meta }) => {
  * @param  {String}
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12, brand = "", released = "") => {
+const fetchProducts = async (page = 1, size = 12, brand = "") => {
   try {
     const response = await fetch(
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}&released=${released}`
+      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`
     );
 
     const body = await response.json();
@@ -64,6 +64,31 @@ const fetchProducts = async (page = 1, size = 12, brand = "", released = "") => 
     }
 
     return body.data;
+  } catch (error) {
+    console.error(error);
+    return { currentProducts, currentPagination };
+  }
+};
+
+/**
+ * Fetch ALL products from api
+ */
+const fetchAllProducts = async () => {
+  try {
+    const response = await fetch(`https://clear-fashion-api.vercel.app/`);
+    const body = await response.json();
+    const number_of_products = body.data.meta.count;
+
+    if (body.success !== true) {
+      console.error(body);
+      return { currentProducts, currentPagination };
+    } else {
+      const response = await fetch(
+        `https://clear-fashion-api.vercel.app/?size=${number_of_products}`
+      );
+      const body = await response.json();
+      return body.data;
+    }
   } catch (error) {
     console.error(error);
     return { currentProducts, currentPagination };
@@ -208,6 +233,8 @@ selectBrand.addEventListener("change", async (event) => {
     currentPagination.brand
   );
 
+  console.log(products);
+
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
@@ -217,21 +244,22 @@ selectBrand.addEventListener("change", async (event) => {
  */
 
 checkerRecentlyReleased.addEventListener("change", async (event) => {
+  let products = {};
   if (checkerRecentlyReleased.checked) {
+    const all_products = await fetchAllProducts();
+
+    console.log(all_products);
+
     const now = new Date();
     const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-    currentPagination.released = two_weeks_ago.toISOString().split("T")[0];
-    console.log(currentPagination.released);
-  } else {
-    currentPagination.released = "";
-  }
 
-  const products = await fetchProducts(
-    currentPagination.currentPage,
-    currentPagination.pageSize,
-    currentPagination.brand,
-    currentPagination.released
-  );
+    products.result = all_products.result.filter((product) => {
+      return new Date(product.released) > two_weeks_ago;
+    });
+    products.meta = all_products.meta;
+  } else {
+    products = await fetchProducts(1, 12, "");
+  }
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
