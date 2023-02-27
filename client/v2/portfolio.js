@@ -269,12 +269,15 @@ checkerRecentlyReleased.addEventListener("change", async (event) => {
 
 checkerReasonablePrice.addEventListener("change", async (event) => {
   let products = {};
+
   if (checkerReasonablePrice.checked) {
     const all_products = await fetchAllProducts();
-
     products.result = all_products.result.filter((product) => {
       return product.price <= 50;
     });
+
+    // products.result = products.result.slice(0, currentPagination.pageSize);
+
     products.meta = all_products.meta;
   } else {
     products = await fetchProducts(1, 12, "");
