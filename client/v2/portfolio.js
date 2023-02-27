@@ -31,6 +31,7 @@ const sectionProducts = document.querySelector("#products");
 // Indicators
 const spanNbProducts = document.querySelector("#nbProducts");
 const spanNbBrands = document.querySelector("#nbBrands");
+const spanNbNewProducts = document.querySelector("#nbNewProducts");
 
 // instantiate the checkers
 const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
@@ -327,6 +328,14 @@ const getIndicators = async () => {
 
   // Total number of brands
   spanNbBrands.innerHTML = brands.length;
+
+  // Number of recent products
+  const now = new Date();
+  const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+  const nbRecentProducts = products.result.filter((product) => {
+    return new Date(product.released) > two_weeks_ago;
+  }).length;
+  spanNbNewProducts.innerHTML = nbRecentProducts;
 };
 
 getIndicators();
