@@ -364,6 +364,7 @@ checkerRecentlyReleased.addEventListener("change", async (event) => {
     products.result = all_products.result.filter((product) => {
       return new Date(product.released) > two_weeks_ago;
     });
+    products.result.slice(0, currentPagination.pageSize);
     products.meta = all_products.meta;
   } else {
     products = await fetchProducts(1, 12, "");
@@ -386,7 +387,7 @@ checkerReasonablePrice.addEventListener("change", async (event) => {
       return product.price <= 50;
     });
 
-    // products.result = products.result.slice(0, currentPagination.pageSize);
+    products.result = products.result.slice(0, currentPagination.pageSize);
 
     products.meta = all_products.meta;
   } else {
@@ -408,7 +409,7 @@ checkerFavorited.addEventListener("change", async (event) => {
     products.result = all_products.result.filter((product) => {
       return favoritedUUIDs.includes(product.uuid);
     });
-
+    products.result.slice(0, currentPagination.pageSize);
     products.meta = all_products.meta;
   } else {
     products = await fetchProducts(1, 12, "");
@@ -424,24 +425,23 @@ checkerFavorited.addEventListener("change", async (event) => {
 
 selectSort.addEventListener("change", async (event) => {
   let products = {};
-  const all_products = await fetchAllProducts();
   products.meta = currentPagination;
   if (event.target.value === "price-asc") {
-    products.result = all_products.result.sort((productA, productB) =>
+    products.result = currentProducts.sort((productA, productB) =>
       productA.price > productB.price ? 1 : -1
     );
   } else if (event.target.value === "price-desc") {
-    products.result = all_products.result.sort((productA, productB) =>
+    products.result = currentProducts.sort((productA, productB) =>
       productA.price < productB.price ? 1 : -1
     );
   } else if (event.target.value === "date-asc") {
-    products.result = all_products.result.sort((productA, productB) => {
+    products.result = currentProducts.sort((productA, productB) => {
       const productADate = new Date(productA.released);
       const productBDate = new Date(productB.released);
       return productADate < productBDate ? 1 : -1;
     });
   } else if (event.target.value === "date-desc") {
-    products.result = all_products.result.sort((productA, productB) => {
+    products.result = currentProducts.sort((productA, productB) => {
       const productADate = new Date(productA.released);
       const productBDate = new Date(productB.released);
       return productADate > productBDate ? 1 : -1;
