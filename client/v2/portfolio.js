@@ -40,6 +40,7 @@ const lastReleased = document.querySelector("#lastReleased");
 // instantiate the checkers
 const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
 const checkerReasonablePrice = document.querySelector("#reasonable-price-checker");
+const checkerFavorited = document.querySelector("#favorited-items");
 
 // Favorited
 let favoritedUUIDs = JSON.parse(localStorage.getItem("MY_FAVORITE_PRODUCTS"));
@@ -363,6 +364,27 @@ checkerReasonablePrice.addEventListener("change", async (event) => {
     });
 
     // products.result = products.result.slice(0, currentPagination.pageSize);
+
+    products.meta = all_products.meta;
+  } else {
+    products = await fetchProducts(1, 12, "");
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select checkbox favorites
+ */
+
+checkerFavorited.addEventListener("change", async (event) => {
+  let products = {};
+  const all_products = await fetchAllProducts();
+  if (checkerFavorited.checked) {
+    products.result = all_products.result.filter((product) => {
+      return favoritedUUIDs.includes(product.uuid);
+    });
 
     products.meta = all_products.meta;
   } else {
