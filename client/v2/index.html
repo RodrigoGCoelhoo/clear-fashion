@@ -3,11 +3,12 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>👕 Clear Fahion | Environmentally & human-friendly clothes</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <h1>Clear fashion</h1>
+    <h1>Clear Fashion</h1>
     <section id="options">
-      <div id="show">
+      <div id="show" class="selector-div">
         <label for="show-select">Show:</label>
         <select name="show" id="show-select">
           <option value="12">12</option>
@@ -15,20 +16,11 @@
           <option value="48">48</option>
         </select>
       </div>
-      <div id="page">
+      <div id="page" class="selector-div">
         <label for="page-select">Go to page:</label>
         <select name="page" id="page-select"></select>
       </div>
-      <div id="filters">
-        <input type="checkbox" id="reasonable-price-checker">By reasonable price</input>
-        <input type="checkbox" id="recently-released-checker">By recently released</input>
-        <input type="checkbox" id="favorited-items">By favorites</input>
-        <div id="brand">
-          <label for="brand-select">By brands:</label>
-          <select name="brand" id="brand-select"></select>
-        </div>
-      </div>
-      <div id="sort">
+      <div id="sort" class="selector-div">
         <label for="sort-select">Sort:</label>
         <select name="sort" id="sort-select">
           <option value="none"></option>
@@ -37,6 +29,16 @@
           <option value="date-asc">Recently released</option>
           <option value="date-desc">Anciently released</option>
         </select>
+      </div>
+      <div id="brand" class="selector-div">
+        <label for="brand-select">By brands:</label>
+        <select name="brand" id="brand-select"></select>
+      </div>
+      <div id="filters">
+        <h3 for="filters">Filters</h3>
+        <input type="checkbox" id="reasonable-price-checker">By reasonable price</input>
+        <input type="checkbox" id="recently-released-checker">By recently released</input>
+        <input type="checkbox" id="favorited-items">By favorites</input>
       </div>
     </section>
     <section id="indicators">
