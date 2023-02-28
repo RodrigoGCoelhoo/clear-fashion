@@ -117,12 +117,6 @@ const fetchAllProducts = async () => {
   }
 };
 
-let all_products;
-async function getData() {
-  all_products = await fetchAllProducts();
-}
-getData();
-
 /**
  * Fetch brand from api
  * @return {Array}
@@ -362,7 +356,7 @@ selectBrand.addEventListener("change", async (event) => {
 checkerRecentlyReleased.addEventListener("change", async (event) => {
   let products = {};
   if (checkerRecentlyReleased.checked) {
-    // const all_products = await fetchAllProducts();
+    const all_products = await fetchAllProducts();
 
     const now = new Date();
     const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
@@ -387,7 +381,7 @@ checkerReasonablePrice.addEventListener("change", async (event) => {
   let products = {};
 
   if (checkerReasonablePrice.checked) {
-    // const all_products = await fetchAllProducts();
+    const all_products = await fetchAllProducts();
     products.result = all_products.result.filter((product) => {
       return product.price <= 50;
     });
@@ -409,7 +403,7 @@ checkerReasonablePrice.addEventListener("change", async (event) => {
 
 checkerFavorited.addEventListener("change", async (event) => {
   let products = {};
-  // const all_products = await fetchAllProducts();
+  const all_products = await fetchAllProducts();
   if (checkerFavorited.checked) {
     products.result = all_products.result.filter((product) => {
       return favoritedUUIDs.includes(product.uuid);
@@ -430,7 +424,7 @@ checkerFavorited.addEventListener("change", async (event) => {
 
 selectSort.addEventListener("change", async (event) => {
   let products = {};
-  // const all_products = await fetchAllProducts();
+  const all_products = await fetchAllProducts();
   products.meta = currentPagination;
   if (event.target.value === "price-asc") {
     products.result = all_products.result.sort((productA, productB) =>
