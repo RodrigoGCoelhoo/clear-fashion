@@ -41,6 +41,9 @@ const lastReleased = document.querySelector("#lastReleased");
 const checkerRecentlyReleased = document.querySelector("#recently-released-checker");
 const checkerReasonablePrice = document.querySelector("#reasonable-price-checker");
 
+// Favorited
+let favoritedUUIDs = JSON.parse(localStorage.getItem("MY_FAVORITE_PRODUCTS"));
+
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -131,13 +134,27 @@ const renderProducts = (products) => {
   const div = document.createElement("div");
   const template = products
     .map((product) => {
-      return `
-      <div class="product" id=${product.uuid}>
-        <span>${product.brand}</span>
-        <a href="${product.link}" target=”_blank”>${product.name}</a>
-        <span>${product.price}</span>
-      </div>
-    `;
+      if (favoritedUUIDs.includes(product.uuid)) {
+        return `
+        <div class="product" id=${product.uuid}>
+          <span>${product.brand}</span>
+          <a href="${product.link}" target=”_blank”>${product.name}</a>
+          <span>${product.price}</span>
+          <input type="checkbox" id="favoriteSelect" value=${product.uuid} checked></input>
+        </div>
+      `;
+      } else {
+        return `
+        <div class="product" id=${product.uuid}>
+          <span>${product.brand}</span>
+          <a href="${product.link}" target=”_blank”>${product.name}</a>
+          <span>${product.price}</span>
+          <input type="checkbox" id="favoriteSelect" value=${product.uuid}></input>
+        </div>
+      `;
+      }
+
+      return;
     })
     .join("");
 
@@ -180,10 +197,81 @@ const renderBrand = async () => {
 };
 renderBrand();
 
-const render = (products, pagination) => {
-  renderProducts(products);
-  renderPagination(pagination);
+/**
+ * After render to execute after all the products render happen
+ */
+const afterRender = async () => {
+  const favoriteSelects = document.querySelectorAll("#favoriteSelect");
+
+  favoriteSelects.forEach((item) => {
+    item.addEventListener("change", async (event) => {
+      const product_UUId = event.target.value;
+      if (item.checked) {
+        favoritedUUIDs.push(product_UUId);
+      } else {
+        favoritedUUIDs = favoritedUUIDs.filter((uuid) => uuid !== product_UUId);
+      }
+      localStorage.setItem("MY_FAVORITE_PRODUCTS", JSON.stringify(favoritedUUIDs));
+    });
+  });
 };
+
+const render = async (products, pagination) => {
+  await renderProducts(products);
+  await renderPagination(pagination);
+  afterRender();
+};
+
+/**
+ * Declaration indicators
+ */
+
+const getIndicators = async () => {
+  const brands = await fetchBrands();
+  const products = await fetchAllProducts();
+
+  // Total number of products
+  spanNbProducts.innerHTML = products.result.length;
+
+  // Total number of brands
+  spanNbBrands.innerHTML = brands.length;
+
+  // Number of recent products
+  const now = new Date();
+  const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+  const nbRecentProducts = products.result.filter((product) => {
+    return new Date(product.released) > two_weeks_ago;
+  }).length;
+  spanNbNewProducts.innerHTML = nbRecentProducts;
+
+  // Percentile
+  const sortedProductsPrice = products.result.sort((productA, productB) =>
+    productA.price > productB.price ? 1 : -1
+  );
+
+  // p50
+  const p50_index = Math.floor(products.result.length * 0.5);
+  spanP50.innerHTML = sortedProductsPrice[p50_index].price;
+
+  // p90
+  const p90_index = Math.floor(products.result.length * 0.9);
+  spanP90.innerHTML = sortedProductsPrice[p90_index].price;
+
+  // p95
+  const p95_index = Math.floor(products.result.length * 0.95);
+  spanP95.innerHTML = sortedProductsPrice[p95_index].price;
+
+  // Date
+  const last_date = products.result.sort((productA, productB) => {
+    const productADate = new Date(productA.released);
+    const productBDate = new Date(productB.released);
+    return productADate < productBDate ? 1 : -1;
+  })[0];
+
+  lastReleased.innerHTML = last_date.released;
+};
+
+getIndicators();
 
 /**
  * Declaration of all Listeners
@@ -320,52 +408,3 @@ selectSort.addEventListener("change", async (event) => {
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
-
-// Indicators
-
-const getIndicators = async () => {
-  const brands = await fetchBrands();
-  const products = await fetchAllProducts();
-
-  // Total number of products
-  spanNbProducts.innerHTML = products.result.length;
-
-  // Total number of brands
-  spanNbBrands.innerHTML = brands.length;
-
-  // Number of recent products
-  const now = new Date();
-  const two_weeks_ago = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-  const nbRecentProducts = products.result.filter((product) => {
-    return new Date(product.released) > two_weeks_ago;
-  }).length;
-  spanNbNewProducts.innerHTML = nbRecentProducts;
-
-  // Percentile
-  const sortedProductsPrice = products.result.sort((productA, productB) =>
-    productA.price > productB.price ? 1 : -1
-  );
-
-  // p50
-  const p50_index = Math.floor(products.result.length * 0.5);
-  spanP50.innerHTML = sortedProductsPrice[p50_index].price;
-
-  // p90
-  const p90_index = Math.floor(products.result.length * 0.9);
-  spanP90.innerHTML = sortedProductsPrice[p90_index].price;
-
-  // p95
-  const p95_index = Math.floor(products.result.length * 0.95);
-  spanP95.innerHTML = sortedProductsPrice[p95_index].price;
-
-  // Date
-  const last_date = products.result.sort((productA, productB) => {
-    const productADate = new Date(productA.released);
-    const productBDate = new Date(productB.released);
-    return productADate < productBDate ? 1 : -1;
-  })[0];
-
-  lastReleased.innerHTML = last_date.released;
-};
-
-getIndicators();
