@@ -8,71 +8,93 @@
   <body>
     <h1>Clear Fashion</h1>
     <section id="options">
-      <div id="show" class="selector-div">
-        <label for="show-select">Show:</label>
-        <select name="show" id="show-select">
-          <option value="12">12</option>
-          <option value="24">24</option>
-          <option value="48">48</option>
-        </select>
+      <div class="column">
+        <div id="show" class="selector-div">
+          <h6 for="show-select">Show</h6>
+          <select name="show" id="show-select">
+            <option value="12">12 items</option>
+            <option value="24">24 items</option>
+            <option value="48">48 items</option>
+          </select>
+        </div>
+        <div id="page" class="selector-div">
+          <h6 for="page-select">Page</h6>
+          <select name="page" id="page-select"></select>
+        </div>
       </div>
-      <div id="page" class="selector-div">
-        <label for="page-select">Go to page:</label>
-        <select name="page" id="page-select"></select>
+
+      <div class="column">
+        <div id="brand" class="selector-div">
+          <h6 for="brand-select">Brand</h6>
+          <select name="brand" id="brand-select"></select>
+        </div>
+        <div id="sort" class="selector-div">
+          <h6 for="sort-select">Filter by</h6>
+          <select name="sort" id="sort-select">
+            <option value="none"></option>
+            <option value="price-asc">Cheaper</option>
+            <option value="price-desc">Expensive</option>
+            <option value="date-asc">Recently released</option>
+            <option value="date-desc">Anciently released</option>
+          </select>
+        </div>
       </div>
-      <div id="sort" class="selector-div">
-        <label for="sort-select">Sort:</label>
-        <select name="sort" id="sort-select">
-          <option value="none"></option>
-          <option value="price-asc">Cheaper</option>
-          <option value="price-desc">Expensive</option>
-          <option value="date-asc">Recently released</option>
-          <option value="date-desc">Anciently released</option>
-        </select>
+      <div id="filters" class="column">
+        <h6>Filter by</h6>
+        <label for="reasonable-price-checker"  style="word-wrap:break-word; margin-top:5px">
+          <input type="checkbox" id="reasonable-price-checker">Reasonable price</input>
+        </label>
+        <label for="recently-released-checker"  style="word-wrap:break-word">
+          <input type="checkbox" id="recently-released-checker">Recently released</input>
+        </label>
+        <label for="favorited-items"  style="word-wrap:break-word">
+          <input type="checkbox" id="favorited-items">Favorites</input>
+        </label>
       </div>
-      <div id="brand" class="selector-div">
-        <label for="brand-select">By brands:</label>
-        <select name="brand" id="brand-select"></select>
+
+      <div class="column">
+        <h6>Indicators</h6>
+        <div style="margin-top:5px">
+          <span id="nbProducts" style="font-weight: bold">0</span>
+          <span>products</span>
+        </div>
+        <div>
+          <span id="nbBrands" style="font-weight: bold">0</span>
+          <span>brands</span>
+        </div>
+        <div>
+          <span id="nbNewProducts" style="font-weight: bold">0</span>
+          <span> new products</span>
+        </div>
+        <div>
+          <span id="lastReleased" style="font-weight: bold"></span>
+          <span>last release</span>
+        </div>
       </div>
-      <div id="filters">
-        <h3 for="filters">Filters</h3>
-        <input type="checkbox" id="reasonable-price-checker">By reasonable price</input>
-        <input type="checkbox" id="recently-released-checker">By recently released</input>
-        <input type="checkbox" id="favorited-items">By favorites</input>
+
+      <div class="column">
+        <h6>Percentiles</h6>
+        <div style="margin-top:5px">
+          <span>50th:</span>
+          <span id="p50">0</span>
+          <span>€</span>
+        </div>
+        <div>
+          <span>90th:</span>
+          <span id="p90">0</span>
+          <span>€</span>
+        </div>
+        <div>
+          <span>95th:</span>
+          <span id="p95">0</span>
+          <span>€</span>
+        </div>
       </div>
+
     </section>
-    <section id="indicators">
-      <h2>Indicators</h2>
-      <div>
-        <span>Number of products</span>
-        <span id="nbProducts">0</span>
-      </div>
-      <div>
-        <span>Number of brands</span>
-        <span id="nbBrands">0</span>
-      </div>
-      <div>
-        <span>Number of new products</span>
-        <span id="nbNewProducts">0</span>
-      </div>
-      <div>
-        <span>p50 price value</span>
-        <span id="p50">0</span>
-      </div>
-      <div>
-        <span>p90 price value</span>
-        <span id="p90">0</span>
-      </div>
-      <div>
-        <span>p95 price value</span>
-        <span id="p95">0</span>
-      </div>
-      <div>
-        <span>Last released date</span>
-        <span id="lastReleased"></span>
-      </div>
+    <section id="products">
+      <div class="productsList"></div>
     </section>
-    <section id="products"></section>
     <script type="text/javascript" charset="UTF-8" src="portfolio.js"></script>
   </body>
 </html>

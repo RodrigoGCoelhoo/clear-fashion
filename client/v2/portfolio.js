@@ -56,6 +56,15 @@ const setCurrentProducts = ({ result, meta }) => {
 };
 
 /**
+ * Auxiliar function to make strings title case
+ */
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+/**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
  * @param  {Number}  [size=12] - size of the page
@@ -131,38 +140,47 @@ const fetchBrands = async () => {
  * @param  {Array} products
  */
 const renderProducts = (products) => {
+  const oldDiv = document.querySelector(".productsList");
+
   const fragment = document.createDocumentFragment();
   const div = document.createElement("div");
+  div.classList.add("productsList");
   const template = products
     .map((product) => {
       if (favoritedUUIDs.includes(product.uuid)) {
         return `
-        <div class="product" id=${product.uuid}>
-          <span>${product.brand}</span>
-          <a href="${product.link}" target=”_blank”>${product.name}</a>
-          <span>${product.price}</span>
-          <input type="checkbox" id="favoriteSelect" value=${product.uuid} checked></input>
-        </div>
+        <a class="product" id=${product.uuid} href="${product.link}" target=”_blank”>
+          <div class="product-column">
+            <span class="brand-string">${toTitleCase(product.brand)}</span>
+            <span class="name-string">${toTitleCase(product.name)}</span>
+            <span class="price-string">${product.price},00 €</span>
+          </div>
+          <div class="product-like">
+            <input type="checkbox" id="favoriteSelect" value=${product.uuid} checked></input>
+          </div>
+        </a>
       `;
       } else {
         return `
-        <div class="product" id=${product.uuid}>
-          <span>${product.brand}</span>
-          <a href="${product.link}" target=”_blank”>${product.name}</a>
-          <span>${product.price}</span>
-          <input type="checkbox" id="favoriteSelect" value=${product.uuid}></input>
-        </div>
+        <a class="product" id=${product.uuid} href="${product.link}" target=”_blank”>
+          <div class="product-column">
+            <span class="brand-string">${toTitleCase(product.brand)}</span>
+            <span class="name-string">${toTitleCase(product.name)}</span>
+            <span class="price-string">${product.price},00 €</span>
+          </div>
+          <div class="product-like">
+            <input type="checkbox" id="favoriteSelect" value=${product.uuid}></input>
+          </div>
+        </a>
       `;
       }
-
-      return;
     })
     .join("");
 
   div.innerHTML = template;
   fragment.appendChild(div);
-  sectionProducts.innerHTML = "<h2>Products</h2>";
-  sectionProducts.appendChild(fragment);
+  // sectionProducts.innerHTML = "<h2>Products</h2>";
+  sectionProducts.replaceChild(fragment, oldDiv);
 };
 
 /**
@@ -252,15 +270,15 @@ const getIndicators = async () => {
 
   // p50
   const p50_index = Math.floor(products.result.length * 0.5);
-  spanP50.innerHTML = sortedProductsPrice[p50_index].price;
+  spanP50.innerHTML = `${sortedProductsPrice[p50_index].price},00`;
 
   // p90
   const p90_index = Math.floor(products.result.length * 0.9);
-  spanP90.innerHTML = sortedProductsPrice[p90_index].price;
+  spanP90.innerHTML = `${sortedProductsPrice[p90_index].price},00`;
 
   // p95
   const p95_index = Math.floor(products.result.length * 0.95);
-  spanP95.innerHTML = sortedProductsPrice[p95_index].price;
+  spanP95.innerHTML = `${sortedProductsPrice[p95_index].price},00`;
 
   // Date
   const last_date = products.result.sort((productA, productB) => {
@@ -269,7 +287,12 @@ const getIndicators = async () => {
     return productADate < productBDate ? 1 : -1;
   })[0];
 
-  lastReleased.innerHTML = last_date.released;
+  const formattedDate = new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(last_date.released));
+  lastReleased.innerHTML = formattedDate;
 };
 
 getIndicators();
