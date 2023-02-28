@@ -163,6 +163,27 @@ a:hover {
   width: 90%;
 }
 
+.reset {
+  background-color: #8cada7;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  align-self: center;
+
+  transition: all 0.2s;
+}
+
+.reset:hover {
+  color: #e0e0e0;
+}
+
+.reset:active {
+  background-color: #e0e0e0;
+}
+
 /* All below here was copied from
 https://www.youtube.com/watch?v=jQuLIUZIG3k&ab_channel=CodingArtist
 */

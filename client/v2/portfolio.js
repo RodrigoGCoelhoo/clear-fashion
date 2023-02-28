@@ -453,3 +453,23 @@ selectSort.addEventListener("change", async (event) => {
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
+
+/**
+ * Reset filters button click event
+ */
+
+document.getElementById("reset").onclick = async function (e) {
+  selectShow.value = 12;
+  selectPage.value = 1;
+  selectBrand.value = "";
+  selectSort.value = "";
+
+  checkerRecentlyReleased.checked = false;
+  checkerReasonablePrice.checked = false;
+  checkerFavorited.checked = false;
+
+  const products = await fetchProducts(1, 12);
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+};
