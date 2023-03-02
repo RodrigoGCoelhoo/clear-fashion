@@ -1,21 +1,54 @@
 /* eslint-disable no-console, no-process-exit */
-const dedicatedbrand = require('./eshops/dedicatedbrand');
 
-async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
+const fs = require("fs");
+
+const dedicatedbrand = require("./eshops/dedicatedbrand");
+const montlimartbrand = require("./eshops/montlimartbrand");
+const circlesportswearbrand = require("./eshops/circlesportswearbrand");
+
+let rawdata = fs.readFileSync("brands.json");
+let brands = JSON.parse(rawdata);
+
+products_json = {};
+
+async function sandbox(eshop) {
   try {
-    console.log(`🕵️‍♀️  browsing ${eshop} eshop`);
+    console.log(`🕵️‍♀️  browsing ${eshop.brand} eshop`);
 
-    const products = await dedicatedbrand.scrape(eshop);
+    let products;
 
-    console.log(products);
-    console.log('done');
-    process.exit(0);
+    if (eshop.brand === "DEDICATED") {
+      products = await dedicatedbrand.scrape(eshop.url);
+    } else if (eshop.brand === "Montlimart") {
+      products = await montlimartbrand.scrape(eshop.url);
+    } else if (eshop.brand === "Circle Sportswear") {
+      products = await circlesportswearbrand.scrape(eshop.url);
+    } else {
+      console.log("Brand not found!");
+      return;
+    }
+
+    products_json[eshop.brand] = products;
+    console.log(`✅  ${eshop.brand} scrape done.`);
   } catch (e) {
     console.error(e);
-    process.exit(1);
   }
 }
 
-const [,, eshop] = process.argv;
+async function scrape() {
+  for (const brand of brands) {
+    console.log(brand.brand);
+    await sandbox(brand);
+  }
+  let data = JSON.stringify(products_json);
+  fs.writeFileSync("products.json", data);
+  console.log("✅  products list saved successfully");
+}
 
-sandbox(eshop);
+scrape();
+
+// const eshop1 = "https://www.dedicatedbrand.com/en/men/news";
+// const eshop2 = "https://www.montlimart.com/72-nouveautes";
+// const eshop3 = "https://shop.circlesportswear.com/collections/collection-homme";
+
+// sandbox(eshop3);
