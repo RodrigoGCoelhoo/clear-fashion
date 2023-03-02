@@ -41,7 +41,7 @@ async function scrape() {
     await sandbox(brand);
   }
   let data = JSON.stringify(products_json);
-  fs.writeFileSync("products.json", data);
+  fs.writeFileSync("products_scraped.json", data);
   console.log("✅  products list saved successfully");
 }
 
