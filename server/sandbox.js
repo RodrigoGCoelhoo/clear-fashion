@@ -37,7 +37,6 @@ async function sandbox(eshop) {
 
 async function scrape() {
   for (const brand of brands) {
-    console.log(brand.brand);
     await sandbox(brand);
   }
   let data = JSON.stringify(products_json);
