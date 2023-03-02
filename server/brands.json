@@ -1,14 +1,17 @@
 [
   {
     "brand": "DEDICATED",
+    "url": "https://www.dedicatedbrand.com/en/men/news",
     "rating": 79
   },
   {
     "brand": "Montlimart",
+    "url": "https://www.montlimart.com/72-nouveautes",
     "rating": 76
   },
   {
     "brand": "Circle Sportswear",
+    "url": "https://shop.circlesportswear.com/collections/collection-homme",
     "rating": 82
-  },
+  }
 ]
