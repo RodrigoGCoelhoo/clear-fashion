@@ -25,8 +25,16 @@ async function connect() {
     return result;
   }
 
+  // Find all products less than 50€
+  async function findProductsLessThanPrice(price) {
+    const query = { price: { $lt: price } };
+    const result = await collection.find(query).toArray();
+    return result;
+  }
+
   return {
     findProductsByBrand,
+    findProductsLessThanPrice,
   };
 }
 
