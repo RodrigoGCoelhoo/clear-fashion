@@ -48,11 +48,21 @@ async function connect() {
     return result;
   }
 
+  // Find all products scraped less than 2 weeks
+  async function findProductsScrapedLessThanTwoWeeks() {
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    const query = { date: { $gte: twoWeeksAgo } };
+    const result = await collection.find(query).toArray();
+    return result;
+  }
+
   return {
     findProductsByBrand,
     findProductsLessThanPrice,
     findProductsSortedByPrice,
     findProductsSortedByDate,
+    findProductsScrapedLessThanTwoWeeks,
   };
 }
 

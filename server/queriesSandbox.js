@@ -12,8 +12,11 @@ async function main() {
   //   const productsSortedByPrice = await mongo.findProductsSortedByPrice();
   //   console.log("Products sorted by price:", productsSortedByPrice);
 
-  const productsSortedByDate = await mongo.findProductsSortedByDate();
-  console.log("Products sorted by date:", productsSortedByDate);
+  //   const productsSortedByDate = await mongo.findProductsSortedByDate();
+  //   console.log("Products sorted by date:", productsSortedByDate);
+
+  const productsScrapedLessThanTwoWeeks = await mongo.findProductsScrapedLessThanTwoWeeks();
+  console.log("Products scraped less than two weeks:", productsScrapedLessThanTwoWeeks);
 
   await client.close();
 }
