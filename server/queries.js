@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 const MONGODB_URI =
   "mongodb+srv://rodrigogcoelhoo:nTJTuNg7SA1JecCA@clusterclearfashion.7no5kbg.mongodb.net/?retryWrites=true&writeConcern=majority";
@@ -57,12 +57,19 @@ async function connect() {
     return result;
   }
 
+  // Find product by id
+  async function findProductById(id) {
+    const result = await collection.findOne({ _id: ObjectId(id) });
+    return result;
+  }
+
   return {
     findProductsByBrand,
     findProductsLessThanPrice,
     findProductsSortedByPrice,
     findProductsSortedByDate,
     findProductsScrapedLessThanTwoWeeks,
+    findProductById,
   };
 }
 
