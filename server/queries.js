@@ -69,6 +69,19 @@ async function connect() {
     return result;
   }
 
+  // Find product by price and brand
+  async function findProductsByPriceAndByBrand(brand, maxPrice) {
+    const filter = {};
+    if (brand) {
+      filter.brand = { $regex: new RegExp(brand, "i") };
+    }
+    if (maxPrice !== undefined) {
+      filter.price = { $lte: maxPrice };
+    }
+    const result = await collection.find(filter).toArray();
+    return result;
+  }
+
   return {
     findAllProducts,
     findProductsByBrand,
@@ -77,6 +90,7 @@ async function connect() {
     findProductsSortedByDate,
     findProductsScrapedLessThanTwoWeeks,
     findProductById,
+    findProductsByPriceAndByBrand,
   };
 }
 
