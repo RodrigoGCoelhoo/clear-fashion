@@ -40,10 +40,19 @@ async function connect() {
     return result;
   }
 
+  // Find all products sorted by date
+  async function findProductsSortedByDate() {
+    const query = {};
+    const options = { sort: { dateAdded: -1 } };
+    const result = await collection.find(query, options).toArray();
+    return result;
+  }
+
   return {
     findProductsByBrand,
     findProductsLessThanPrice,
     findProductsSortedByPrice,
+    findProductsSortedByDate,
   };
 }
 
