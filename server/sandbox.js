@@ -1,4 +1,5 @@
 /* eslint-disable no-console, no-process-exit */
+const { v4: uuidv4 } = require("uuid");
 
 const fs = require("fs");
 
@@ -9,7 +10,7 @@ const circlesportswearbrand = require("./eshops/circlesportswearbrand");
 let rawdata = fs.readFileSync("brands.json");
 let brands = JSON.parse(rawdata);
 
-products_json = {};
+products_json = { products: [] };
 
 async function sandbox(eshop) {
   try {
@@ -28,7 +29,16 @@ async function sandbox(eshop) {
       return;
     }
 
-    products_json[eshop.brand] = products;
+    products.forEach((product) => {
+      products_json.products.push({
+        id: uuidv4(),
+        date: new Date(),
+        brand: eshop.brand,
+        name: product.name,
+        price: product.price,
+      });
+    });
+
     console.log(`✅  ${eshop.brand} scrape done.`);
   } catch (e) {
     console.error(e);
@@ -39,6 +49,7 @@ async function scrape() {
   for (const brand of brands) {
     await sandbox(brand);
   }
+  console.log(products_json);
   let data = JSON.stringify(products_json);
   fs.writeFileSync("products_scraped.json", data);
   console.log("✅  products list saved successfully");
