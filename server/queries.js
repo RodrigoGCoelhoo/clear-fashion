@@ -19,6 +19,12 @@ async function connect() {
   const collection = database.collection(MONGODB_COLLECTION_NAME);
 
   // Find all products by brand
+  async function findAllProducts() {
+    const result = await collection.find().toArray();
+    return result;
+  }
+
+  // Find all products by brand
   async function findProductsByBrand(brand) {
     const query = { brand: brand };
     const result = await collection.find(query).toArray();
@@ -64,6 +70,7 @@ async function connect() {
   }
 
   return {
+    findAllProducts,
     findProductsByBrand,
     findProductsLessThanPrice,
     findProductsSortedByPrice,
