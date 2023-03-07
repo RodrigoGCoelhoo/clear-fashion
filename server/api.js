@@ -24,11 +24,30 @@ app.get("/products/:id", async (request, response) => {
   const mongo = await connect();
 
   const product = await mongo.findProductById(request.params.id);
-  console.log("Products:", product);
 
   await client.close();
 
   response.send({ product: product });
+});
+
+app.get("/search", async (request, response) => {
+  const mongo = await connect();
+
+  const products = await mongo.findProductsByPriceAndByBrand(
+    request.query.brand,
+    parseInt(request.query.price)
+  );
+
+  productsSliced = products.slice(0, parseInt(request.query.limit));
+
+  await client.close();
+
+  response.send({
+    brand: request.query.brand,
+    limit: parseInt(request.query.limit),
+    total: products.length,
+    results: productsSliced,
+  });
 });
 
 app.listen(PORT);
