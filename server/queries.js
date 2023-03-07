@@ -75,7 +75,7 @@ async function connect() {
     if (brand) {
       filter.brand = { $regex: new RegExp(brand, "i") };
     }
-    if (maxPrice !== undefined) {
+    if (maxPrice) {
       filter.price = { $lte: maxPrice };
     }
     const result = await collection.find(filter).toArray();

@@ -38,7 +38,9 @@ app.get("/search", async (request, response) => {
     parseInt(request.query.price)
   );
 
-  productsSliced = products.slice(0, parseInt(request.query.limit));
+  const productsSliced = request.query.limit
+    ? products.slice(0, parseInt(request.query.limit))
+    : products;
 
   await client.close();
 
