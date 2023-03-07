@@ -32,9 +32,18 @@ async function connect() {
     return result;
   }
 
+  // Find all products sorted by price
+  async function findProductsSortedByPrice() {
+    const query = {};
+    const options = { sort: { price: 1 } };
+    const result = await collection.find(query, options).toArray();
+    return result;
+  }
+
   return {
     findProductsByBrand,
     findProductsLessThanPrice,
+    findProductsSortedByPrice,
   };
 }
 
