@@ -30,6 +30,21 @@ app.get("/products/:id", async (request, response) => {
   response.send({ product: product });
 });
 
+app.get("/products", async (request, response) => {
+  const mongo = await connect();
+
+  const products = await mongo.findAllProducts();
+  const pages = ceil(products.length / parseInt(request.query.size));
+
+  if (request.query.page && request.query.size) {
+    const products_paged = products.slice();
+  }
+
+  await client.close();
+
+  response.send({ products: products });
+});
+
 app.get("/search", async (request, response) => {
   const mongo = await connect();
 
