@@ -152,6 +152,7 @@ const renderProducts = (products) => {
         <a class="product" id=${product.uuid} href="${product.link}" target=”_blank”>
           <div class="product-column">
             <span class="brand-string">${toTitleCase(product.brand)}</span>
+            <img src="${product.photo}"/>
             <span class="name-string">${toTitleCase(product.name)}</span>
             <span class="price-string">${product.price},00 €</span>
           </div>
@@ -165,6 +166,7 @@ const renderProducts = (products) => {
         <a class="product" id=${product.uuid} href="${product.link}" target=”_blank”>
           <div class="product-column">
             <span class="brand-string">${toTitleCase(product.brand)}</span>
+            <img src="${product.photo}"/>
             <span class="name-string">${toTitleCase(product.name)}</span>
             <span class="price-string">${product.price},00 €</span>
           </div>

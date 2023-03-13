@@ -23,6 +23,17 @@ h6 {
   margin-bottom: 5px;
 }
 
+img {
+  max-width: 300px;
+  max-height: 300px;
+  align-self: center;
+  overflow: hidden;
+  margin: 20px 0px;
+
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
 /* Style the options section */
 #options {
   background-color: #f1f1f1;
@@ -190,7 +201,7 @@ https://www.youtube.com/watch?v=jQuLIUZIG3k&ab_channel=CodingArtist
 
 .product-like {
   margin-top: 10px;
-  margin-left: 15px;
+  /* margin-left: 15px; */
   height: 15px;
   width: 30px;
   display: flex;
