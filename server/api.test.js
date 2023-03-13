@@ -18,4 +18,14 @@ describe("API endpoints", () => {
       expect(response.body.product).toHaveProperty("_id", "640720061dee8b3ddf9328d2");
     });
   });
+
+  describe("GET /products", () => {
+    it("responds with JSON containing all products", async () => {
+      const response = await request(app).get("/products");
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("products");
+      expect(response.body.products).toBeInstanceOf(Array);
+      expect(response.body.products.length).toBeGreaterThan(0);
+    });
+  });
 });
