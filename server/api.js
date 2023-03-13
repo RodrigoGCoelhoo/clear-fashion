@@ -34,15 +34,22 @@ app.get("/products", async (request, response) => {
   const mongo = await connect();
 
   const products = await mongo.findAllProducts();
-  const pages = ceil(products.length / parseInt(request.query.size));
 
   if (request.query.page && request.query.size) {
-    const products_paged = products.slice();
+    const pages = Math.ceil(products.length / parseInt(request.query.size));
+    const products_paged = products.slice(
+      (request.query.page - 1) * request.query.size,
+      request.query.page * request.query.size
+    );
+
+    await client.close();
+
+    response.send({ products: products_paged });
+  } else {
+    await client.close();
+
+    response.send({ products: products });
   }
-
-  await client.close();
-
-  response.send({ products: products });
 });
 
 app.get("/search", async (request, response) => {
