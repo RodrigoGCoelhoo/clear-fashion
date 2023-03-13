@@ -4,8 +4,6 @@ const helmet = require("helmet");
 
 const { connect, client } = require("./queries");
 
-const PORT = 8092;
-
 const app = express();
 
 module.exports = app;
@@ -73,7 +71,3 @@ app.get("/search", async (request, response) => {
     results: productsSliced,
   });
 });
-
-app.listen(PORT);
-
-console.log(`📡 Running on port ${PORT}`);
