@@ -38,4 +38,17 @@ describe("API endpoints", () => {
       expect(response.body.products.length).toBe(12);
     });
   });
+
+  describe("GET /search", () => {
+    it("responds with JSON containing containing brand, limit and total, but no list of results", async () => {
+      const response = await request(app).get("/search?brand=Acme&price=50&limit=10");
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("brand", "Acme");
+      expect(response.body).toHaveProperty("limit", 10);
+      expect(response.body).toHaveProperty("total", 0);
+      expect(response.body).toHaveProperty("results");
+      expect(response.body.results).toBeInstanceOf(Array);
+      expect(response.body.results.length).toBe(0);
+    });
+  });
 });
