@@ -28,4 +28,14 @@ describe("API endpoints", () => {
       expect(response.body.products.length).toBeGreaterThan(0);
     });
   });
+
+  describe("GET /products", () => {
+    it("responds with JSON containing 12 products", async () => {
+      const response = await request(app).get("/products?page=1&size=12");
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("products");
+      expect(response.body.products).toBeInstanceOf(Array);
+      expect(response.body.products.length).toBe(12);
+    });
+  });
 });
