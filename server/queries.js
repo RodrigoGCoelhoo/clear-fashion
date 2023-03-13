@@ -10,7 +10,7 @@ const MONGODB_COLLECTION_NAME = "products";
 async function connect() {
   try {
     await client.connect();
-    console.log("Connected to server!");
+    // console.log("Connected to server!");
   } catch (e) {
     console.error(e);
   }
