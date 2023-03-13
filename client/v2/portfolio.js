@@ -43,7 +43,9 @@ const checkerReasonablePrice = document.querySelector("#reasonable-price-checker
 const checkerFavorited = document.querySelector("#favorited-items");
 
 // Favorited
-let favoritedUUIDs = JSON.parse(localStorage.getItem("MY_FAVORITE_PRODUCTS"));
+let favoritedUUIDs = JSON.parse(localStorage.getItem("MY_FAVORITE_PRODUCTS"))
+  ? JSON.parse(localStorage.getItem("MY_FAVORITE_PRODUCTS"))
+  : [];
 
 /**
  * Set global value
