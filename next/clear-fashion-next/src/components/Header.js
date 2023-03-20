@@ -18,7 +18,7 @@ export default function Header() {
           <section className={styles.column}>
             <h3 className={styles.title}>Show</h3>
             <Select
-              defaultValue="lucy"
+              defaultValue="12"
               style={{ width: "90%", marginBottom: "1rem" }}
               // onChange={handleChange}
               options={[
@@ -29,13 +29,12 @@ export default function Header() {
             />
             <h3 className={styles.title}>Page</h3>
             <Select
-              defaultValue="lucy"
+              defaultValue="1"
               style={{ width: "90%" }}
               // onChange={handleChange}
               options={[
-                { value: "12", label: "12" },
-                { value: "24", label: "24" },
-                { value: "36", label: "36" },
+                { value: "1", label: "1" },
+                { value: "2", label: "2" },
               ]}
             />
           </section>
@@ -43,25 +42,17 @@ export default function Header() {
           <section className={styles.column}>
             <h3 className={styles.title}>Brand</h3>
             <Select
-              defaultValue="lucy"
+              defaultValue=""
               style={{ width: "90%", marginBottom: "1rem" }}
               // onChange={handleChange}
-              options={[
-                { value: "12", label: "12" },
-                { value: "24", label: "24" },
-                { value: "36", label: "36" },
-              ]}
+              options={[{ value: "", label: "" }]}
             />
             <h3 className={styles.title}>Filter by</h3>
             <Select
-              defaultValue="lucy"
+              defaultValue=""
               style={{ width: "90%" }}
               // onChange={handleChange}
-              options={[
-                { value: "12", label: "12" },
-                { value: "24", label: "24" },
-                { value: "36", label: "36" },
-              ]}
+              options={[{ value: "", label: "" }]}
             />
           </section>
 
