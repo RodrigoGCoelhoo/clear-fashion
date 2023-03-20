@@ -1,7 +1,23 @@
 import Head from "next/head";
 import Header from "../components/Header";
+import Card from "../components/Card";
+import React, { useEffect, useState } from "react";
 
-export default function Home() {
+import styles from "@/styles/Index.module.css";
+
+export async function getStaticProps() {
+  const res = await fetch("https://clear-fashion-api.vercel.app/?size=1000");
+  const data = await res.json();
+  const products = data.data.result;
+
+  return {
+    props: {
+      products,
+    },
+  };
+}
+
+export default function Home({ products }) {
   return (
     <>
       <Head>
@@ -11,6 +27,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header></Header>
+      <div className={styles.products}>
+        <div className={styles.productsList}>
+          {products.map((product) => {
+            return <Card product={product} key={product.uuid}></Card>;
+          })}
+        </div>
+      </div>
     </>
   );
 }
