@@ -1,0 +1,37 @@
+.card {
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  color: rgb(131, 131, 131);
+  font-size: 12px;
+}
+
+.image {
+  max-width: 300px;
+  max-height: 300px;
+  align-self: center;
+  overflow: hidden;
+  margin: 20px 0px;
+
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.name {
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.price {
+  color: #000;
+  font-size: 14px;
+  margin-top: 5px;
+}
