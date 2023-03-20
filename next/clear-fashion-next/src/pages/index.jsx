@@ -29,7 +29,7 @@ export default function Home({ products }) {
       <Header></Header>
       <div className={styles.products}>
         <div className={styles.productsList}>
-          {products.map((product) => {
+          {products.slice(0, 12).map((product) => {
             return <Card product={product} key={product.uuid}></Card>;
           })}
         </div>
