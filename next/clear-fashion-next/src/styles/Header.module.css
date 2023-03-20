@@ -1,0 +1,35 @@
+.brandName {
+  width: 100%;
+  background-color: #8cada7;
+  color: #fff;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 1.5rem;
+  background-color: #f1f1f1;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.title {
+  margin-bottom: 0.5rem;
+}
+
+.info {
+  flex-direction: row;
+}
+
+.data {
+  font-weight: bold;
+}
